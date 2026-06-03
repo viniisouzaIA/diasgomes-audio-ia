@@ -1,0 +1,20 @@
+{
+  "name": "diasgomes-audio-ia",
+  "version": "1.0.0",
+  "description": "Transcrição e resumo de áudios jurídicos via Whisper + GPT-4o.",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "openai": "^4.67.0"
+  }
+}

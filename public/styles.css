@@ -1,0 +1,581 @@
+/* ----------------------------------------------------
+   1. SISTEMA DE DESIGN & VARIÁVEIS
+   ---------------------------------------------------- */
+:root {
+  --color-bg: #FAF9F6;
+  --color-accent: #C9A96E;
+  --color-accent-hover: #B8975C;
+  --color-accent-light: rgba(201, 169, 110, 0.08);
+  --color-primary: #111111;
+  --color-text: #2C2621;
+  --color-text-muted: #83776D;
+  --color-card-bg: #FFFFFF;
+  --color-border: rgba(201, 169, 110, 0.16);
+  --color-border-light: rgba(201, 169, 110, 0.08);
+
+  --color-error-bg: #FAF4F3;
+  --color-error-text: #A33C30;
+  --color-error-border: rgba(163, 60, 48, 0.12);
+
+  --color-success-bg: #F5F7F3;
+  --color-success-text: #415E2E;
+  --color-success-border: rgba(65, 94, 46, 0.1);
+
+  --font-title: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --shadow-sm: 0 2px 8px rgba(31, 26, 23, 0.02);
+  --shadow-md: 0 16px 40px rgba(31, 26, 23, 0.04), 0 1px 2px rgba(31, 26, 23, 0.02);
+  --shadow-lg: 0 30px 60px rgba(31, 26, 23, 0.06);
+
+  --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --border-radius: 12px;
+}
+
+/* ----------------------------------------------------
+   2. RESETS E BASE
+   ---------------------------------------------------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(201, 169, 110, 0.3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
+
+/* ----------------------------------------------------
+   3. LAYOUT GERAL
+   ---------------------------------------------------- */
+.app-container {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  opacity: 0;
+  transform: translateY(15px);
+  animation: appEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes appEntrance {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.app-header {
+  text-align: center;
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.app-logo {
+  height: 220px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  transition: var(--transition-smooth);
+}
+
+.app-logo:hover { transform: scale(1.02); }
+
+.app-card {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  padding: 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+/* ----------------------------------------------------
+   4. UPLOAD
+   ---------------------------------------------------- */
+.upload-section { width: 100%; }
+
+.drag-drop-zone {
+  border: 1px dashed rgba(201, 169, 110, 0.35);
+  background-color: #FCFAF8;
+  border-radius: var(--border-radius);
+  padding: 60px 40px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  transition: var(--transition-smooth);
+  position: relative;
+  outline: none;
+}
+
+.drag-drop-zone:hover, .drag-drop-zone.drag-active {
+  border-color: var(--color-accent);
+  background-color: rgba(201, 169, 110, 0.02);
+  box-shadow: 0 8px 24px rgba(201, 169, 110, 0.03);
+}
+
+.upload-icon-container {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: rgba(201, 169, 110, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
+  transition: var(--transition-smooth);
+}
+
+.drag-drop-zone:hover .upload-icon-container {
+  transform: translateY(-2px);
+  background-color: rgba(201, 169, 110, 0.12);
+}
+
+.upload-icon-container svg { width: 24px; height: 24px; }
+
+.upload-text { display: flex; flex-direction: column; gap: 8px; }
+
+.upload-text-primary {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  letter-spacing: -0.01em;
+}
+
+.upload-text-secondary { font-size: 0.85rem; color: var(--color-text-muted); }
+
+.formats-indicator {
+  font-size: 0.75rem;
+  color: var(--color-accent-hover);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  border: 1px solid rgba(201, 169, 110, 0.18);
+  padding: 4px 14px;
+  border-radius: 20px;
+  background-color: rgba(201, 169, 110, 0.03);
+  margin-top: 4px;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+.upload-active-state {
+  display: none;
+  width: 100%;
+  border: 1px solid var(--color-border-light);
+  background-color: #FAF9F6;
+  border-radius: var(--border-radius);
+  padding: 24px 28px;
+  align-items: center;
+  gap: 20px;
+  justify-content: space-between;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.file-info { display: flex; align-items: center; gap: 18px; flex: 1; min-width: 0; }
+
+.file-icon {
+  color: var(--color-accent);
+  background: rgba(201, 169, 110, 0.08);
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.file-icon svg { width: 20px; height: 20px; }
+
+.file-details { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+
+.file-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-meta {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-size { font-weight: 500; }
+
+.file-status-badge {
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-ready {
+  background-color: var(--color-accent-light);
+  color: var(--color-text);
+  border: 1px solid rgba(201, 169, 110, 0.15);
+}
+
+.badge-success {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-text);
+  border: 1px solid var(--color-success-border);
+}
+
+.badge-error {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-border);
+}
+
+.remove-file-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+}
+
+.remove-file-btn:hover {
+  background-color: rgba(61, 43, 31, 0.04);
+  color: var(--color-error-text);
+}
+
+.remove-file-btn svg { width: 18px; height: 18px; }
+
+#file-input { display: none; }
+
+/* ----------------------------------------------------
+   5. BOTÃO DE AÇÃO & SPINNER
+   ---------------------------------------------------- */
+.action-container { display: flex; justify-content: center; width: 100%; }
+
+.btn-submit {
+  font-family: var(--font-body);
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  border: 1px solid var(--color-primary);
+  padding: 16px 44px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  min-width: 260px;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-primary);
+  box-shadow: 0 8px 24px rgba(201, 169, 110, 0.22);
+  transform: translateY(-2px);
+}
+
+.btn-submit:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(201, 169, 110, 0.15);
+}
+
+.btn-submit:disabled {
+  background-color: #EAE5DD;
+  border-color: #EAE5DD;
+  color: #A89F95;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-text { transition: var(--transition-fast); display: inline-flex; align-items: center; gap: 8px; }
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: none;
+}
+
+.btn-submit:hover:not(:disabled) .spinner {
+  border-color: rgba(26, 26, 26, 0.2);
+  border-top-color: var(--color-primary);
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.btn-submit.is-loading {
+  cursor: wait;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  opacity: 0.9;
+}
+
+.btn-submit.is-loading .spinner { display: inline-block; }
+
+/* ----------------------------------------------------
+   6. ERRO
+   ---------------------------------------------------- */
+.error-container {
+  display: none;
+  background-color: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  border-radius: var(--border-radius);
+  padding: 16px 20px;
+  align-items: flex-start;
+  gap: 12px;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.error-icon { color: var(--color-error-text); flex-shrink: 0; margin-top: 2px; }
+.error-icon svg { width: 18px; height: 18px; }
+
+.error-message {
+  font-size: 0.875rem;
+  color: var(--color-error-text);
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* ----------------------------------------------------
+   7. RESULTADOS
+   ---------------------------------------------------- */
+.results-container {
+  display: none;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
+  margin-top: 8px;
+  animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.result-panel { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border-light);
+  padding-bottom: 16px;
+}
+
+.panel-title {
+  font-family: var(--font-title);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  letter-spacing: -0.01em;
+}
+
+.btn-copy {
+  background: none;
+  border: none;
+  color: var(--color-accent-hover);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: var(--transition-fast);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.btn-copy:hover { background-color: var(--color-accent-light); color: var(--color-primary); }
+.btn-copy svg { width: 14px; height: 14px; }
+
+.text-content-box {
+  background-color: #FAF9F6;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--border-radius);
+  padding: 28px;
+  height: 420px;
+  overflow-y: auto;
+  font-size: 0.925rem;
+  line-height: 1.8;
+  color: var(--color-text);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* ----------------------------------------------------
+   8. PLACEHOLDER VAZIO
+   ---------------------------------------------------- */
+.empty-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 40px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(250, 249, 246, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+  border: 1px dashed var(--color-border-light);
+  border-radius: var(--border-radius);
+  gap: 20px;
+}
+
+.empty-placeholder-icon { color: rgba(201, 169, 110, 0.35); }
+.empty-placeholder-icon svg { width: 44px; height: 44px; }
+.empty-placeholder-text { max-width: 340px; }
+
+.empty-placeholder-title {
+  font-family: var(--font-title);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+
+.empty-placeholder-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* ----------------------------------------------------
+   9. ESTADOS GERAIS
+   ---------------------------------------------------- */
+.app-container.state-empty .upload-empty-state { display: flex; }
+.app-container.state-empty .upload-active-state { display: none; }
+.app-container.state-empty .results-container { display: none; }
+.app-container.state-empty .empty-placeholder { display: flex; }
+.app-container.state-empty .error-container { display: none; }
+.app-container.state-empty .btn-submit { display: inline-flex; }
+
+.app-container.state-selected .upload-empty-state { display: none; }
+.app-container.state-selected .upload-active-state { display: flex; }
+.app-container.state-selected .results-container { display: none; }
+.app-container.state-selected .empty-placeholder { display: flex; }
+.app-container.state-selected .error-container { display: none; }
+.app-container.state-selected .btn-submit { display: inline-flex; }
+
+.app-container.state-loading .upload-empty-state { display: none; }
+.app-container.state-loading .upload-active-state { display: flex; opacity: 0.5; pointer-events: none; }
+.app-container.state-loading .results-container { display: none; }
+.app-container.state-loading .empty-placeholder { display: flex; }
+.app-container.state-loading .error-container { display: none; }
+
+.app-container.state-success .upload-empty-state { display: none; }
+.app-container.state-success .upload-active-state { display: flex; }
+.app-container.state-success .results-container { display: grid; }
+.app-container.state-success .empty-placeholder { display: none; }
+.app-container.state-success .error-container { display: none; }
+
+.app-container.state-error .upload-empty-state { display: none; }
+.app-container.state-error .upload-active-state { display: flex; }
+.app-container.state-error .results-container { display: none; }
+.app-container.state-error .empty-placeholder { display: flex; }
+.app-container.state-error .error-container { display: flex; }
+.app-container.state-error .btn-submit { display: inline-flex; }
+
+/* ----------------------------------------------------
+   10. UTILS & ANIMAÇÕES
+   ---------------------------------------------------- */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.fade-in { animation: fadeIn 0.4s ease forwards; }
+
+/* ----------------------------------------------------
+   11. RESPONSIVO
+   ---------------------------------------------------- */
+@media (max-width: 900px) {
+  body { padding: 40px 16px; }
+  .app-logo { height: 180px; }
+  .app-card { padding: 36px 24px; gap: 36px; }
+  .results-container { grid-template-columns: 1fr; gap: 32px; }
+  .text-content-box { height: 320px; padding: 20px; }
+}
+
+@media (max-width: 480px) {
+  .app-logo { height: 130px; }
+  .drag-drop-zone { padding: 48px 20px; }
+  .upload-active-state {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    text-align: center;
+    padding: 20px;
+  }
+  .file-info { flex-direction: column; text-align: center; }
+  .file-meta { flex-direction: column; gap: 4px; }
+  .remove-file-btn { align-self: center; }
+}
+
+/* ----------------------------------------------------
+   12. TOAST
+   ---------------------------------------------------- */
+.toast-copy {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid var(--color-primary);
+  z-index: 1100;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toast-copy.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}

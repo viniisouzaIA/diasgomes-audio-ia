@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dias Gomes Advocacia — Transcritor de Áudios</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  <div id="app-container" class="app-container state-empty">
+
+    <header class="app-header">
+      <img src="/logo.png" alt="Dias Gomes Advocacia" class="app-logo">
+    </header>
+
+    <main class="app-card">
+
+      <!-- UPLOAD -->
+      <section class="upload-section">
+
+        <!-- Drag & drop -->
+        <div class="drag-drop-zone upload-empty-state" id="drop-zone">
+          <div class="upload-icon-container">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+            </svg>
+          </div>
+          <div class="upload-text">
+            <span class="upload-text-primary">Arraste o arquivo de áudio aqui ou clique para selecionar</span>
+            <span class="upload-text-secondary">Selecione arquivos de audiências, depoimentos ou reuniões</span>
+          </div>
+          <div>
+            <span class="formats-indicator">MP3, WAV, M4A</span>
+          </div>
+          <input type="file" id="file-input" accept=".mp3,.wav,.m4a,audio/mpeg,audio/wav,audio/mp4,audio/x-m4a">
+        </div>
+
+        <!-- Preview do arquivo -->
+        <div class="upload-active-state" id="file-preview-card">
+          <div class="file-info">
+            <div class="file-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+              </svg>
+            </div>
+            <div class="file-details">
+              <span class="file-name" id="preview-file-name"></span>
+              <div class="file-meta">
+                <span class="file-size" id="preview-file-size"></span>
+                <span>•</span>
+                <span class="file-status-badge badge-ready" id="preview-file-badge">Pronto para processamento</span>
+              </div>
+            </div>
+          </div>
+          <button class="remove-file-btn" id="btn-remove-file" title="Remover arquivo" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- BOTÃO -->
+      <section class="action-container">
+        <button id="btn-process" class="btn-submit" disabled type="button">
+          <span class="spinner" id="btn-spinner"></span>
+          <span class="btn-text" id="btn-text">Transcrever e Resumir</span>
+        </button>
+      </section>
+
+      <!-- ERRO -->
+      <section class="error-container" id="error-message-box">
+        <div class="error-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+          </svg>
+        </div>
+        <div class="error-message" id="error-message-text">
+          Falha no processamento do áudio.
+        </div>
+      </section>
+
+      <!-- PLACEHOLDER -->
+      <section class="empty-placeholder" id="placeholder-view">
+        <div class="empty-placeholder-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+          </svg>
+        </div>
+        <div class="empty-placeholder-text">
+          <h3 class="empty-placeholder-title">Aguardando Processamento</h3>
+          <p class="empty-placeholder-desc">Insira um arquivo de áudio acima e clique em "Transcrever e Resumir" para visualizar a transcrição textual e o resumo do conteúdo.</p>
+        </div>
+      </section>
+
+      <!-- RESULTADOS -->
+      <section class="results-container" id="results-view">
+
+        <div class="result-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Transcrição</h2>
+            <button class="btn-copy" data-copy-target="transcription-content" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376A8.965 8.965 0 0 0 12 12.75c-.197 0-.39.024-.577.07m0 0a8.965 8.965 0 0 1-7.417 5.344m7.417-5.344V9m.472-4.01 2.192 2.192m-2.192-2.192a8.902 8.902 0 0 0-3.32 1.488M17.685 10.011a9.013 9.013 0 0 1 1.5 5.24c0 .332-.018.66-.053.984m-4.004-3.914a8.9 8.9 0 0 1 3.32-1.488m-3.32 1.488a8.965 8.965 0 0 0-3.32-1.488m1.48 10.013a8.9 8.9 0 0 0 3.32 1.488m-3.32-1.488A8.965 8.965 0 0 0 12 12.75" />
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <div class="text-content-box" id="transcription-content"></div>
+        </div>
+
+        <div class="result-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Resumo</h2>
+            <button class="btn-copy" data-copy-target="summary-content" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376A8.965 8.965 0 0 0 12 12.75c-.197 0-.39.024-.577.07m0 0a8.965 8.965 0 0 1-7.417 5.344m7.417-5.344V9m.472-4.01 2.192 2.192m-2.192-2.192a8.902 8.902 0 0 0-3.32 1.488M17.685 10.011a9.013 9.013 0 0 1 1.5 5.24c0 .332-.018.66-.053.984m-4.004-3.914a8.9 8.9 0 0 1 3.32-1.488m-3.32 1.488a8.965 8.965 0 0 0-3.32-1.488m1.48 10.013a8.9 8.9 0 0 0 3.32 1.488m-3.32-1.488A8.965 8.965 0 0 0 12 12.75" />
+              </svg>
+              Copiar
+            </button>
+          </div>
+          <div class="text-content-box" id="summary-content"></div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <div id="toast" class="toast-copy">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; color: var(--color-accent)">
+      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+    </svg>
+    <span id="toast-text">Texto copiado com sucesso.</span>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

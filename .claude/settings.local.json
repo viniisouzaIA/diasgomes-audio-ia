@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Remove-Item -Path \"index.html\" -Force; Get-ChildItem -Force -Recurse -Exclude node_modules | Where-Object { -not $_.PSIsContainer -or $_.Name -notlike \"node_modules\" } | Select-Object FullName | Sort-Object FullName)",
+      "PowerShell(git init)",
+      "PowerShell(git add .)",
+      "PowerShell(git commit -m \"first commit\")",
+      "PowerShell(git branch -M main)",
+      "PowerShell(git remote add origin https://github.com/viniisouzaIA/diasgomes-audio-ia.git)",
+      "PowerShell(git push -u origin main)"
+    ]
+  }
+}
