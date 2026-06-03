@@ -1,4 +1,8 @@
+import { spawn } from 'node:child_process';
+import { writeFile, readFile, unlink } from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
+import { randomBytes } from 'node:crypto';
 import OpenAI, { toFile } from 'openai';
 
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -16,10 +20,46 @@ Regras estritas, sem exceções:
 
 Saída: apenas o resumo. Sem cabeçalhos extras, sem meta-comentários, sem disclaimers.`;
 
-export async function transcribeAudio(buffer, originalName) {
-  const ext = path.extname(originalName).slice(1).toLowerCase() || 'mp3';
-  const cleanName = `audio.${ext}`;
-  const file = await toFile(buffer, cleanName);
+function runFfmpeg(args) {
+  return new Promise((resolve, reject) => {
+    const proc = spawn('ffmpeg', args, { stdio: ['ignore', 'pipe', 'pipe'] });
+    let stderr = '';
+    proc.stderr.on('data', (chunk) => { stderr += chunk.toString(); });
+    proc.on('error', reject);
+    proc.on('close', (code) => {
+      if (code === 0) return resolve();
+      reject(new Error(`ffmpeg falhou (code ${code}): ${stderr.slice(-500)}`));
+    });
+  });
+}
+
+async function transcodeToMp3(buffer) {
+  const id = randomBytes(8).toString('hex');
+  const inputPath = path.join(os.tmpdir(), `${id}-in`);
+  const outputPath = path.join(os.tmpdir(), `${id}-out.mp3`);
+
+  await writeFile(inputPath, buffer);
+  try {
+    await runFfmpeg([
+      '-y',
+      '-i', inputPath,
+      '-vn',
+      '-acodec', 'libmp3lame',
+      '-ar', '16000',
+      '-ac', '1',
+      '-b:a', '64k',
+      outputPath,
+    ]);
+    return await readFile(outputPath);
+  } finally {
+    unlink(inputPath).catch(() => {});
+    unlink(outputPath).catch(() => {});
+  }
+}
+
+export async function transcribeAudio(buffer, _originalName) {
+  const mp3Buffer = await transcodeToMp3(buffer);
+  const file = await toFile(mp3Buffer, 'audio.mp3');
   const response = await client.audio.transcriptions.create({
     file,
     model: 'whisper-1',
