@@ -5,7 +5,8 @@ services:
     restart: unless-stopped
     ports:
       - "${PORT:-3000}:3000"
-    env_file:
-      - .env
     environment:
       - NODE_ENV=production
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PORT=${PORT:-3000}
+      - MAX_UPLOAD_MB=${MAX_UPLOAD_MB:-25}
