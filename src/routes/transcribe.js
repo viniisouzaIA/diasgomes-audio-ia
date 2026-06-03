@@ -6,7 +6,7 @@ import { transcribeAudio, summarizeTranscript } from '../services/openai.js';
 const router = Router();
 
 const MAX_UPLOAD_MB = Number(process.env.MAX_UPLOAD_MB) || 25;
-const ALLOWED_EXT = new Set(['.mp3', '.wav', '.m4a', '.ogg', '.oga', '.webm', '.mp4', '.mpga', '.flac']);
+const ALLOWED_EXT = new Set(['.mp3', '.wav', '.m4a', '.ogg', '.oga', '.opus', '.webm', '.mp4', '.mpga', '.flac']);
 
 const upload = multer({
   storage: multer.memoryStorage(),

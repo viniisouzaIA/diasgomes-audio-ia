@@ -1,4 +1,4 @@
-const VALID_EXTENSIONS = ['.mp3', '.wav', '.m4a', '.ogg', '.oga', '.webm', '.mp4', '.mpga', '.flac'];
+const VALID_EXTENSIONS = ['.mp3', '.wav', '.m4a', '.ogg', '.oga', '.opus', '.webm', '.mp4', '.mpga', '.flac'];
 
 const appContainer = document.getElementById('app-container');
 const dropZone = document.getElementById('drop-zone');
