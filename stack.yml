@@ -19,7 +19,6 @@ services:
         - "traefik.http.routers.diasgomes_audio.rule=Host(`transcritor.diasgomesadvoc.com.br`)"
         - "traefik.http.routers.diasgomes_audio.entrypoints=websecure"
         - "traefik.http.routers.diasgomes_audio.tls.certresolver=letsencryptresolver"
-        - "traefik.http.routers.diasgomes_audio.middlewares=sslheader@docker"
         - "traefik.http.routers.diasgomes_audio.service=diasgomes_audio"
         - "traefik.http.services.diasgomes_audio.loadbalancer.server.port=3000"
         - "traefik.http.services.diasgomes_audio.loadbalancer.passhostheader=true"
