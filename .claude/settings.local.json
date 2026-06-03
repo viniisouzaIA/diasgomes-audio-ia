@@ -8,7 +8,11 @@
       "PowerShell(git branch -M main)",
       "PowerShell(git remote add origin https://github.com/viniisouzaIA/diasgomes-audio-ia.git)",
       "PowerShell(git push -u origin main)",
-      "PowerShell($env:PATH += \";C:\\\\Program Files\\\\Git\\\\bin\"; git add .; git commit -m \"feat: transcode any audio to clean MP3 via ffmpeg before Whisper\"; git push)"
+      "PowerShell($env:PATH += \";C:\\\\Program Files\\\\Git\\\\bin\"; git add .; git commit -m \"feat: transcode any audio to clean MP3 via ffmpeg before Whisper\"; git push)",
+      "PowerShell(node --version 2>$null)",
+      "PowerShell(npm --version 2>$null)",
+      "PowerShell(ffmpeg -version 2>$null)",
+      "PowerShell(winget install --id=Gyan.FFmpeg -e --accept-package-agreements --accept-source-agreements)"
     ]
   }
 }

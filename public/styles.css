@@ -65,7 +65,7 @@ body {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 8px;
   opacity: 0;
   transform: translateY(15px);
   animation: appEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -77,7 +77,7 @@ body {
 
 .app-header {
   text-align: center;
-  padding-bottom: 10px;
+  padding-bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,6 +91,7 @@ body {
   object-fit: contain;
   mix-blend-mode: multiply;
   transition: var(--transition-smooth);
+  margin-bottom: -30px;
 }
 
 .app-logo:hover { transform: scale(1.02); }
@@ -530,14 +531,14 @@ body {
    ---------------------------------------------------- */
 @media (max-width: 900px) {
   body { padding: 40px 16px; }
-  .app-logo { height: 180px; }
+  .app-logo { height: 180px; margin-bottom: -20px; }
   .app-card { padding: 36px 24px; gap: 36px; }
   .results-container { grid-template-columns: 1fr; gap: 32px; }
   .text-content-box { height: 320px; padding: 20px; }
 }
 
 @media (max-width: 480px) {
-  .app-logo { height: 130px; }
+  .app-logo { height: 130px; margin-bottom: -15px; }
   .drag-drop-zone { padding: 48px 20px; }
   .upload-active-state {
     flex-direction: column;

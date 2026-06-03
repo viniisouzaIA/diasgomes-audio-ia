@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: diasgomes-audio-ia:v2
+    image: ghcr.io/viniisouzaia/diasgomes-audio-ia:latest
     networks:
       - diasgomes
     environment:
@@ -12,6 +12,9 @@ services:
       - MAX_UPLOAD_MB=25
     deploy:
       replicas: 1
+      update_config:
+        order: start-first
+        failure_action: rollback
       restart_policy:
         condition: on-failure
       labels:
