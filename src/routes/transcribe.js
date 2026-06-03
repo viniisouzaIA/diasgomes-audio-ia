@@ -34,7 +34,7 @@ router.post('/transcribe', (req, res, next) => {
 
     const filePath = req.file.path;
     try {
-      const transcription = await transcribeAudio(filePath);
+      const transcription = await transcribeAudio(filePath, req.file.originalname);
       if (!transcription) {
         return res.status(422).json({ error: 'Transcrição vazia. Verifique se o áudio contém fala.' });
       }
