@@ -1,4 +1,4 @@
-const VALID_EXTENSIONS = ['.mp3', '.wav', '.m4a'];
+const VALID_EXTENSIONS = ['.mp3', '.wav', '.m4a', '.ogg', '.oga', '.webm', '.mp4', '.mpga', '.flac'];
 
 const appContainer = document.getElementById('app-container');
 const dropZone = document.getElementById('drop-zone');
@@ -51,7 +51,7 @@ function setBadge(text, variant) {
 
 function selectFile(file) {
   if (!isValidAudio(file)) {
-    showError('Formato não suportado. Envie um arquivo MP3, WAV ou M4A.');
+    showError('Formato não suportado. Envie um arquivo MP3, WAV, M4A, OGG, WEBM, MP4 ou FLAC.');
     return;
   }
   selectedFile = file;

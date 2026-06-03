@@ -8,7 +8,7 @@ import { transcribeAudio, summarizeTranscript } from '../services/openai.js';
 const router = Router();
 
 const MAX_UPLOAD_MB = Number(process.env.MAX_UPLOAD_MB) || 25;
-const ALLOWED_EXT = new Set(['.mp3', '.wav', '.m4a']);
+const ALLOWED_EXT = new Set(['.mp3', '.wav', '.m4a', '.ogg', '.oga', '.webm', '.mp4', '.mpga', '.flac']);
 
 const upload = multer({
   dest: path.join(os.tmpdir(), 'diasgomes-uploads'),
@@ -16,7 +16,7 @@ const upload = multer({
   fileFilter: (_req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
     if (!ALLOWED_EXT.has(ext)) {
-      return cb(new Error('Formato não suportado. Use MP3, WAV ou M4A.'));
+      return cb(new Error('Formato não suportado. Use MP3, WAV, M4A, OGG, WEBM, MP4 ou FLAC.'));
     }
     cb(null, true);
   },
