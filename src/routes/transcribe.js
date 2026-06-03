@@ -1,7 +1,5 @@
 import { Router } from 'express';
 import multer from 'multer';
-import fs from 'node:fs/promises';
-import os from 'node:os';
 import path from 'node:path';
 import { transcribeAudio, summarizeTranscript } from '../services/openai.js';
 
@@ -11,7 +9,7 @@ const MAX_UPLOAD_MB = Number(process.env.MAX_UPLOAD_MB) || 25;
 const ALLOWED_EXT = new Set(['.mp3', '.wav', '.m4a', '.ogg', '.oga', '.webm', '.mp4', '.mpga', '.flac']);
 
 const upload = multer({
-  dest: path.join(os.tmpdir(), 'diasgomes-uploads'),
+  storage: multer.memoryStorage(),
   limits: { fileSize: MAX_UPLOAD_MB * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
@@ -32,9 +30,8 @@ router.post('/transcribe', (req, res, next) => {
       return res.status(400).json({ error: 'Nenhum arquivo enviado.' });
     }
 
-    const filePath = req.file.path;
     try {
-      const transcription = await transcribeAudio(filePath, req.file.originalname);
+      const transcription = await transcribeAudio(req.file.buffer, req.file.originalname);
       if (!transcription) {
         return res.status(422).json({ error: 'Transcrição vazia. Verifique se o áudio contém fala.' });
       }
@@ -42,8 +39,6 @@ router.post('/transcribe', (req, res, next) => {
       res.json({ transcription, summary });
     } catch (e) {
       next(e);
-    } finally {
-      fs.unlink(filePath).catch(() => {});
     }
   });
 });
