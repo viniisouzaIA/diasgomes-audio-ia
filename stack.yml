@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: ghcr.io/viniisouzaia/diasgomes-audio-ia:v1.2.0
+    image: ghcr.io/viniisouzaia/diasgomes-audio-ia:v1.2.1
     networks:
       - diasgomes
     environment:
