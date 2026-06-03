@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import OpenAI, { toFile } from 'openai';
 
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -17,7 +18,9 @@ Regras estritas, sem exceções:
 Saída: apenas o resumo. Sem cabeçalhos extras, sem meta-comentários, sem disclaimers.`;
 
 export async function transcribeAudio(filePath, originalName) {
-  const file = await toFile(fs.createReadStream(filePath), originalName);
+  const ext = path.extname(originalName).slice(1).toLowerCase() || 'mp3';
+  const cleanName = `audio.${ext}`;
+  const file = await toFile(fs.createReadStream(filePath), cleanName);
   const response = await client.audio.transcriptions.create({
     file,
     model: 'whisper-1',
